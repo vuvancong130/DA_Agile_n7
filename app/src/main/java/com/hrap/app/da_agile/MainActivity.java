@@ -1,24 +1,52 @@
 package com.hrap.app.da_agile;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.view.animation.LinearInterpolator;
+import android.widget.ImageView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity {
+    ImageView img;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+        img = findViewById(R.id.img);
+        startquay(1000);
+        new CountDownTimer(3000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+
+            }
+
+            @Override
+            public void onFinish() {
+                Intent intent = new Intent(MainActivity.this, Acticity_Dang_Nhap.class);
+                startActivity(intent);
+            }
+        }.start();
+    }
+    private void startquay(long time){
+        Runnable run=new Runnable() {
+            @Override
+            public void run() {
+
+                img.animate()
+                        .rotationBy(360)
+                        .withEndAction(this)
+                        .setDuration(time)
+                        .setInterpolator(new LinearInterpolator())
+                        .start();
+            }
+        };
+        img.animate().rotationBy(360)
+                .withEndAction(run)
+                .setDuration(500)
+                .setInterpolator(new LinearInterpolator())
+                .start();
     }
 }
