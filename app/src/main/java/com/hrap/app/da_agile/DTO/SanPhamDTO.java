@@ -8,8 +8,6 @@ public class SanPhamDTO {
     public int don_gia,so_luong;
     public String img;
 
-    public SanPhamDTO() {
-    }
 
     public SanPhamDTO(String ten_SP, int ma_loai, String hsd, int don_gia, int so_luong, String img) {
         this.ten_SP = ten_SP;
@@ -29,6 +27,9 @@ public class SanPhamDTO {
         this.so_luong = so_luong;
         this.img = img;
     }
+    public SanPhamDTO() {
+    }
+
 
     public int getMa_SP() {
         return ma_SP;
