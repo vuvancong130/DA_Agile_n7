@@ -1,64 +1,110 @@
 package com.hrap.app.da_agile;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link Fragment_DoiMatKhau#newInstance} factory method to
- * create an instance of this fragment.
- */
+import com.google.android.material.textfield.TextInputEditText;
+import com.hrap.app.da_agile.DAO.NhanVienDAO;
+import com.hrap.app.da_agile.DTO.NhanVienDTO;
+
+
 public class Fragment_DoiMatKhau extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    Button btn_luu_mkmoi, btn_huy_luu_mkmoi;
+    TextInputEditText tiedt_mkcu, tiedt_mkmoi, tiedt_nhaplaimkmoi;
+    NhanVienDAO nhanVienDAO;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
-    public Fragment_DoiMatKhau() {
-        // Required empty public constructor
-    }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment Fragment_DoiMatKhau.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static Fragment_DoiMatKhau newInstance(String param1, String param2) {
-        Fragment_DoiMatKhau fragment = new Fragment_DoiMatKhau();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
+    @Nullable
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    public View onCreateView(@Nullable LayoutInflater inflater,@Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment__doi_mat_khau, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        btn_luu_mkmoi = view.findViewById(R.id.btn_luu_mkmoi);
+        btn_huy_luu_mkmoi = view.findViewById(R.id.btn_huy_luu_mkmoi);
+        tiedt_mkcu = view.findViewById(R.id.tiedt_mkcu);
+        tiedt_mkmoi = view.findViewById(R.id.tiedt_mkmoi);
+        tiedt_nhaplaimkmoi = view.findViewById(R.id.tiedt_nhaplaimkmoi);
+        nhanVienDAO = new NhanVienDAO(getContext());
+
+        btn_huy_luu_mkmoi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tiedt_mkcu.setText(null);
+                tiedt_mkmoi.setText(null);
+                tiedt_nhaplaimkmoi.setText(null);
+            }
+        });
+
+        btn_luu_mkmoi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences pref = getActivity().getSharedPreferences("USER_FILE", Context.MODE_PRIVATE);
+                String user = pref.getString("USERNAME", "");
+                if (validate() > 0) {
+                    NhanVienDTO nhanVienDTO = nhanVienDAO.getID(user);
+                    nhanVienDTO.setMat_khau(tiedt_mkmoi.getText().toString());
+                    if (nhanVienDAO.update(nhanVienDTO) > 0) {
+                        Toast.makeText(getActivity(), "Đổi mật khẩu thành công.", Toast.LENGTH_SHORT).show();
+                        tiedt_mkcu.setText(null);
+                        tiedt_mkmoi.setText(null);
+                        tiedt_nhaplaimkmoi.setText(null);
+
+                    } else {
+                        Toast.makeText(getActivity(), "Đổi mật khẩu thất bại.", Toast.LENGTH_SHORT).show();
+
+                    }
+                }
+            }
+        });
+    }
+
+    public int validate() {
+        int check = 1;
+        if (tiedt_mkcu.getText().length() == 0 || tiedt_mkmoi.length() == 0 || tiedt_nhaplaimkmoi.length() == 0) {
+            if (tiedt_mkcu.getText().length() == 0) {
+                tiedt_mkcu.setError("Vui lòng nhập mật khẩu cũ!");
+                check = -1;
+            }
+            if (tiedt_mkmoi.length() == 0) {
+                tiedt_mkmoi.setError("Vui lòng nhập mật khẩu mới!");
+                check = -1;
+            }
+            if (tiedt_nhaplaimkmoi.length() == 0) {
+                tiedt_nhaplaimkmoi.setError("Vui lòng nhập mật khẩu!");
+                check = -1;
+            }
+        } else {
+            SharedPreferences pref = getActivity().getSharedPreferences("USER_FILE", Context.MODE_PRIVATE);
+            String mkcu = pref.getString("PASSWORD", "");
+            String mkmoi = tiedt_mkmoi.getText().toString();
+            String mkmoi2 = tiedt_nhaplaimkmoi.getText().toString();
+            if (!mkcu.equals(tiedt_mkcu.getText().toString())) {
+                tiedt_mkcu.setError("Sai mật khẩu!");
+                check = -1;
+            }
+            if (!mkmoi.equals(mkmoi2)) {
+                tiedt_nhaplaimkmoi.setError("Mật khẩu không trùng khớp!");
+                check = -1;
+            }
+        }
+        return check;
     }
 }
