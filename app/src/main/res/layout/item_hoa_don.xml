@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    android:orientation="horizontal"
+    android:background="@drawable/custom_item_background">
+
+    <LinearLayout
+        android:layout_width="240dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:orientation="vertical"
+        android:padding="5dp">
+
+        <TextView
+            android:id="@+id/txt_maHD"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Mã HD:1"
+            android:textSize="16dp" />
+
+        <TextView
+            android:id="@+id/txt_maNV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tên NV:  Nguyen Van A"
+            android:textSize="16dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txt_maTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tên TV: Nguyễn Anh B"
+            android:textSize="16dp" />
+
+        <TextView
+            android:id="@+id/txt_maSP"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tên SP: kẹo milo"
+            android:textSize="16dp" />
+
+        <TextView
+            android:id="@+id/txt_soLuong"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Số lượng: "
+            android:textSize="16dp" />
+
+        <TextView
+            android:id="@+id/txt_donGia"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Đơn giá: "
+            android:textSize="16dp" />
+        <TextView
+            android:id="@+id/txt_tongTien"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tổng tiền: "
+            android:textSize="16dp" />
+
+
+        <TextView
+            android:id="@+id/txt_ngayXuat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ngày: "
+            android:textSize="16dp" />
+
+
+        <TextView
+            android:id="@+id/txt_loaiHoaDon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hóa đơn nhập"
+            android:textSize="16dp"/>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center_vertical"
+        android:padding="5dp">
+
+        <ImageButton
+            android:id="@+id/imgbtn_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:src="@drawable/baseline_delete_24" />
+        <TextView
+            android:id="@+id/txt_trangthai"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Trạng thái: "
+            android:textStyle="bold"
+            android:textSize="16dp" />
+
+    </LinearLayout>
+
+</LinearLayout>

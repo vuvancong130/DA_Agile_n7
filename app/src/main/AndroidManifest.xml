@@ -19,6 +19,9 @@
             android:name=".Fragment_QL_SanPham"
             android:exported="false" />
         <activity
+            android:name=".Acticity_Dang_Nhap"
+            android:exported="false" />
+        <activity
             android:name=".Fragment_QL_LoaiHang"
             android:exported="false" />
         <activity

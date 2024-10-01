@@ -1,24 +1,43 @@
 package com.hrap.app.da_agile;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+
+import com.google.android.material.textfield.TextInputEditText;
+import com.hrap.app.da_agile.DAO.NhanVienDAO;
 
 public class Activity_Quen_Mat_Khau extends AppCompatActivity {
+    TextInputEditText resetpass;
+    NhanVienDAO nhanVienDAO;
+    Button xacnhan;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_quen_mat_khau);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
+        resetpass = findViewById(R.id.PassWordResetPass);
+        xacnhan = findViewById(R.id.btn_xacnhan);
+        nhanVienDAO = new NhanVienDAO(this);
+
+        xacnhan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String newpass = resetpass.getText().toString();
+                String id = getIntent().getStringExtra("id_key");
+                String matKhau = getIntent().getStringExtra("id_matKhau");
+
+                int result = nhanVienDAO.ResetPassword(id, matKhau, newpass);
+                if (result == 1){
+                    Toast.makeText(Activity_Quen_Mat_Khau.this, "Đặt lại mật khẩu thành công", Toast.LENGTH_SHORT).show();
+                    finish();
+                } else  {
+                    Toast.makeText(Activity_Quen_Mat_Khau.this, "Đặt lại mật khẩu thất bại", Toast.LENGTH_SHORT).show();
+                }
+            }
         });
     }
 }
