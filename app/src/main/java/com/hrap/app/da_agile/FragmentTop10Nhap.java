@@ -1,64 +1,39 @@
 package com.hrap.app.da_agile;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link FragmentTop10Nhap#newInstance} factory method to
- * create an instance of this fragment.
- */
+import androidx.fragment.app.Fragment;
+
+import com.hrap.app.da_agile.Adapter.Top10AdapterNhap;
+import com.hrap.app.da_agile.DAO.ThongKeDAO;
+import com.hrap.app.da_agile.DTO.Top10;
+
+import java.util.ArrayList;
+
+
 public class FragmentTop10Nhap extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+   ListView lv_top10_nhap;
+    ArrayList<Top10> lisst_top;
+    Top10AdapterNhap adt;
 
-    public FragmentTop10Nhap() {
-        // Required empty public constructor
-    }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment FragmentTop10Nhap.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static FragmentTop10Nhap newInstance(String param1, String param2) {
-        FragmentTop10Nhap fragment = new FragmentTop10Nhap();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_top10_nhap, container, false);
+        View v=inflater.inflate(R.layout.fragment_top10_nhap,container,false);
+        lv_top10_nhap=v.findViewById(R.id.lv_top_nhap);
+        ThongKeDAO tkdao=new ThongKeDAO(getActivity());
+        lisst_top=(ArrayList<Top10>) tkdao.getTopNhap();
+        adt=new Top10AdapterNhap(getActivity(),this,lisst_top);
+        lv_top10_nhap.setAdapter(adt);
+        return v;
     }
 }
